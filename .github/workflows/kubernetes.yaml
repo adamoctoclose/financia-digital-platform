@@ -12,6 +12,7 @@ on:
       - '.octopus/**'
       - 'kubernetes/src/argo/**'
       - 'kubernetes/src/helm/**'
+      - 'kubernetes/src/k8s/**'
 
 jobs:
   build-and-release:
@@ -77,13 +78,13 @@ jobs:
             ghcr.io/${{ env.GHCR_OWNER_SLUG }}/${{ env.SPACE_NAME_SLUG }}.frontend:${{ env.RELEASE_VERSION }}
 
       # --- API ---
-      # - name: Build & Push API
-      #   uses: docker/build-push-action@v6
-      #   with:
-      #     context: kubernetes/src/Api
-      #     push: true
-      #     tags: |
-      #       ghcr.io/${{ env.GHCR_OWNER_SLUG }}/${{ env.SPACE_NAME_SLUG }}.api:${{ env.RELEASE_VERSION }}
+      - name: Build & Push API
+        uses: docker/build-push-action@v6
+        with:
+          context: kubernetes/src/Api
+          push: true
+          tags: |
+            ghcr.io/${{ env.GHCR_OWNER_SLUG }}/${{ env.SPACE_NAME_SLUG }}.api:${{ env.RELEASE_VERSION }}
 
       # ---------------------------------------------------------
       # OCTOPUS
