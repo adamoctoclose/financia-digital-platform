@@ -18,7 +18,7 @@ spec:
         - name: artifactory-pull-secret
       containers:
         - name: api
-          image: artifactory.octopussamples.com/demo-enterprise-docker/cbidigital.api:CHANGE_ME_TAG
+          image: adamoctoclose/financiadigital.api:1.0.0.3
           ports:
             - containerPort: 5150
           env:
