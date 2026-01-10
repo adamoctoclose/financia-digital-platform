@@ -22,7 +22,7 @@ jobs:
       packages: write
 
     env:
-      BASE_VERSION: ${{ vars.KUBERNETES_VERSION }}
+      BASE_VERSION: 1.0.0
 
     steps:
       - name: Checkout
@@ -86,16 +86,16 @@ jobs:
           tags: |
             ghcr.io/${{ env.GHCR_OWNER_SLUG }}/${{ env.SPACE_NAME_SLUG }}.api:${{ env.RELEASE_VERSION }}
 
-      # ---------------------------------------------------------
-      # OCTOPUS
-      # ---------------------------------------------------------
-      - name: Push Build Info
-        uses: OctopusDeploy/push-build-information-action@v3
-        with:
-          packages: |
-            ghcr.io/${{ env.GHCR_OWNER_SLUG }}/${{ env.SPACE_NAME_SLUG }}.frontend
-            ghcr.io/${{ env.GHCR_OWNER_SLUG }}/${{ env.SPACE_NAME_SLUG }}.api
-          version: ${{ env.RELEASE_VERSION }}
-          api_key: ${{ secrets.OCTOPUS_API_KEY }}
-          server: ${{ secrets.OCTOPUS_URL }}
-          space: ${{ secrets.OCTOPUS_SPACE_ID }}
+      # # ---------------------------------------------------------
+      # # OCTOPUS
+      # # ---------------------------------------------------------
+      # - name: Push Build Info
+      #   uses: OctopusDeploy/push-build-information-action@v3
+      #   with:
+      #     packages: |
+      #       ghcr.io/${{ env.GHCR_OWNER_SLUG }}/${{ env.SPACE_NAME_SLUG }}.frontend
+      #       ghcr.io/${{ env.GHCR_OWNER_SLUG }}/${{ env.SPACE_NAME_SLUG }}.api
+      #     version: ${{ env.RELEASE_VERSION }}
+      #     api_key: ${{ secrets.OCTOPUS_API_KEY }}
+      #     server: ${{ secrets.OCTOPUS_URL }}
+      #     space: ${{ secrets.OCTOPUS_SPACE_ID }}
