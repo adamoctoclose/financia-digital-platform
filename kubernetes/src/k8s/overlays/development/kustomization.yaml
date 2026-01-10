@@ -7,8 +7,8 @@ resources:
   - ./frontend
 
 # This ensures everything in this Argo App lands in the right namespace
-namespace: financia-development-kust 
+#namespace: financia-development-k
 
-# Optional: Add a common label to everything in this environment
+# Optional: Add a commßon label to everything in this environment
 commonLabels:
   env: development
