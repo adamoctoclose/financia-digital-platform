@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-api # Must match the name in base/api/deployment.yaml
+spec:
+  template:
+    spec:
+      containers:
+        - name: api
+          # Here we replace the placeholder with a real tag
+          image: ghcr.io/adamoctoclose/financiadigital.api:1.0.0.3
