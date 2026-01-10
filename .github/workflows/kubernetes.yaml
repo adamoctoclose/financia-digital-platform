@@ -1,0 +1,100 @@
+name: Deploy - Kubernetes (Multi-Project)
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - 'FRP-*'
+      - 'hotfix/*'
+    paths-ignore:
+      - '.github/**'
+      - '.octopus/**'
+      - 'kubernetes/src/argo/**'
+      - 'kubernetes/src/helm/**'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    env:
+      BASE_VERSION: ${{ vars.KUBERNETES_VERSION }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ---------------------------------------------------------
+      # VERSIONING (EXPLICIT + NON-AMBIGUOUS)
+      # ---------------------------------------------------------
+      - name: Determine version
+        run: |
+          BASE="${{ env.BASE_VERSION }}"
+          BRANCH="${GITHUB_REF_NAME}"
+
+          if [[ "$BRANCH" == "main" ]]; then
+            VERSION="$BASE.${{ github.run_number }}"
+
+          elif [[ "$BRANCH" == hotfix/* ]]; then
+            VERSION="$BASE.${{ github.run_number }}-hotfix"
+
+          else
+            SAFE_BRANCH=$(echo "$BRANCH" | tr '[:upper:]' '[:lower:]' | tr '/' '-')
+            VERSION="$BASE.${{ github.run_number }}-$SAFE_BRANCH.${{ github.run_attempt }}"
+          fi
+
+          echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
+
+      # ---------------------------------------------------------
+      # NORMALISATION
+      # ---------------------------------------------------------
+      - name: Normalise names
+        run: |
+          echo "SPACE_NAME_SLUG=$(echo '${{ secrets.OCTOPUS_SPACE_ID }}' | tr -d ' ' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+          echo "GHCR_OWNER_SLUG=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+      # ---------------------------------------------------------
+      # DOCKER
+      # ---------------------------------------------------------
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # --- Frontend ---
+      - name: Build & Push Frontend
+        uses: docker/build-push-action@v6
+        with:
+          context: kubernetes/src/Frontend
+          push: true
+          tags: |
+            ghcr.io/${{ env.GHCR_OWNER_SLUG }}/${{ env.SPACE_NAME_SLUG }}.frontend:${{ env.RELEASE_VERSION }}
+
+      # --- API ---
+      # - name: Build & Push API
+      #   uses: docker/build-push-action@v6
+      #   with:
+      #     context: kubernetes/src/Api
+      #     push: true
+      #     tags: |
+      #       ghcr.io/${{ env.GHCR_OWNER_SLUG }}/${{ env.SPACE_NAME_SLUG }}.api:${{ env.RELEASE_VERSION }}
+
+      # ---------------------------------------------------------
+      # OCTOPUS
+      # ---------------------------------------------------------
+      - name: Push Build Info
+        uses: OctopusDeploy/push-build-information-action@v3
+        with:
+          packages: |
+            ghcr.io/${{ env.GHCR_OWNER_SLUG }}/${{ env.SPACE_NAME_SLUG }}.frontend
+            ghcr.io/${{ env.GHCR_OWNER_SLUG }}/${{ env.SPACE_NAME_SLUG }}.api
+          version: ${{ env.RELEASE_VERSION }}
+          api_key: ${{ secrets.OCTOPUS_API_KEY }}
+          server: ${{ secrets.OCTOPUS_URL }}
+          space: ${{ secrets.OCTOPUS_SPACE_ID }}

@@ -1,0 +1,51 @@
+# Ignore build outputs
+bin/
+obj/
+
+# Ignore user-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Ignore IDE-specific files
+.vscode/
+.idea/
+
+# Ignore logs and temporary files
+*.log
+*.tmp
+*.temp
+*.pid
+
+# Ignore environment files
+.env
+.env.*
+
+# Ignore database files
+kubernetes/src/Api/items.db
+
+# Ignore Docker-related files
+docker-compose.override.yml
+**/Dockerfile.*
+
+# Ignore Kubernetes manifests (if generated dynamically)
+kubernetes/manifests/
+
+# Ignore compiled Razor views
+kubernetes/src/Frontend/obj/
+
+# Ignore GitHub Actions temporary files
+.github/workflows/*.log
+
+# Ignore NuGet packages
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+
+# Ignore generated files
+kubernetes/src/Api/obj/
+kubernetes/src/Frontend/obj/
+kubernetes/src/Api/Properties/launchSettings.json
+kubernetes/src/Frontend/Properties/launchSettings.json
