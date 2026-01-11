@@ -19,7 +19,7 @@ replicas:
   - name: demo-api
     count: 2
   - name: demo-frontend
-    count: 1
+    count: 2
 
 # 5. IMAGES: Controlled by Octopus Packages
 images:
