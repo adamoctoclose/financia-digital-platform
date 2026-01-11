@@ -7,11 +7,7 @@ variable "octopus.deployment.frontend.replicas" {
 }
 
 variable "Project.Channel.Name" {
-    value "1.0.1-config" {
+    value "config" {
         channel = ["configuration"]
-    }
-
-    value "2.0.1-release" {
-        channel = ["default"]
     }
 }
