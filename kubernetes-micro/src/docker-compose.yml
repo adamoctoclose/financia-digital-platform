@@ -1,0 +1,24 @@
+services:
+  api:
+    platform: linux/amd64
+    build:
+      context: ./Api
+      dockerfile: Dockerfile
+    ports:
+      - "5150:5150"
+    environment:
+      - ASPNETCORE_URLS=http://+:5150
+      - UseExternalMigrations=false
+      - DatabaseProvider=sqlite
+    volumes:
+      - ./Api/items.db:/app/items.db
+
+  frontend:
+    platform: linux/amd64
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5151:5151"
+    environment:
+      - ASPNETCORE_URLS=http://+:5151
