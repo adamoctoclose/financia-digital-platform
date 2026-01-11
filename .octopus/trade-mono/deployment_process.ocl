@@ -1,0 +1,57 @@
+step "update-argo-cd-application-manifests" {
+    name = "Update Argo CD Application Manifests"
+
+    action {
+        action_type = "Octopus.ArgoCDUpdateManifests"
+        properties = {
+            Octopus.Action.ArgoCD.CommitMessageDescription = <<-EOT
+                Project: #{Octopus.Project.Slug}
+                Environment: #{Octopus.Environment.Slug}#{if Octopus.Deployment.Tenant.Slug }
+                Tenant: #{Octopus.Deployment.Tenant.Slug}#{/if}
+                EOT
+            Octopus.Action.ArgoCD.CommitMessageSummary = "Updated Manifests with Release: #{Octopus.Release.Number}"
+            Octopus.Action.ArgoCD.CommitMethod = "DirectCommit"
+            Octopus.Action.ArgoCD.InputPath = "kubernetes/src/k8s/overlays/templates/kustomization.yaml"
+            Octopus.Action.ArgoCD.PurgeOutputFolder = "False"
+            Octopus.Action.GitRepository.Source = "External"
+            Octopus.Action.Script.ScriptSource = "GitRepository"
+            OctopusUseBundledTooling = "False"
+        }
+        worker_pool = "hosted-ubuntu"
+
+        container {
+            feed = "github-container-registry"
+            image = "octopusdeploylabs/argocd-workertools"
+        }
+
+        git_dependencies {
+            default_branch = "main"
+            file_path_filters = ["kubernetes/src/k8s/overlays/templates/kustomization.yaml", "kubernetes/src/k8s/overlays/templates/kustomization.yaml/**/*"]
+            git_credential_id = "GitCredentials-341"
+            git_credential_type = "Library"
+            repository_uri = "https://github.com/adamoctoclose/financia-digital-platform.git"
+        }
+
+        packages "financiadigital.api" {
+            acquisition_location = "NotAcquired"
+            feed = "github-container-registry"
+            package_id = "adamoctoclose/financiadigital.api"
+            properties = {
+                Extract = "False"
+                Purpose = "DockerImageReference"
+                SelectionMode = "immediate"
+            }
+        }
+
+        packages "financiadigital.frontend" {
+            acquisition_location = "NotAcquired"
+            feed = "github-container-registry"
+            package_id = "adamoctoclose/financiadigital.frontend"
+            properties = {
+                Extract = "False"
+                Purpose = "DockerImageReference"
+                SelectionMode = "immediate"
+            }
+        }
+    }
+}

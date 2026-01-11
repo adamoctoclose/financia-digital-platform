@@ -1,0 +1,7 @@
+variable "octopus.deployment.api.replicas" {
+    value "2" {}
+}
+
+variable "octopus.deployment.frontend.replicas" {
+    value "1" {}
+}
