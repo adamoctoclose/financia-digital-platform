@@ -1,22 +1,29 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+# 1. RESOURCES: Correctly pointing to your base folders
 resources:
-  - ./api
-  - ./frontend
+  - ../../base/api
+  - ../../base/frontend
 
-#ßnamespace: development-ns
+# 2. NAMESPACE: Dynamic based on environment
+namespace: financia-digital-api-development
 
-# Manage scaling here
+# 3. LABELS: Track who manages this
+commonLabels:
+  app.kubernetes.io/managed-by: octopus-deploy
+  environment: development
+
+# 4. SCALING: Controlled by Octopus Variables
 replicas:
   - name: demo-api
-    count: #{octopus.deployment.api.replicas}
+    count: 2
   - name: demo-frontend
     count: 1
 
-# Manage versions here
+# 5. IMAGES: Controlled by Octopus Packages
 images:
   - name: ghcr.io/adamoctoclose/financiadigital.api
-    newTag: "1.0.0.6"
+    newTag: 1.0.0.5
   - name: ghcr.io/adamoctoclose/financiadigital.frontend
-    newTag: "1.0.0.5"
+    newTag: 1.0.0.5
