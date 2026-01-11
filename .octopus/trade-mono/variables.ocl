@@ -5,3 +5,13 @@ variable "octopus.deployment.api.replicas" {
 variable "octopus.deployment.frontend.replicas" {
     value "3" {}
 }
+
+variable "Project.Channel.Name" {
+    value "1.0.1-config" {
+        channel = ["configuration"]
+    }
+
+    value "2.0.1-release" {
+        channel = ["default"]
+    }
+}
