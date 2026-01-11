@@ -10,7 +10,7 @@ resources:
 # Manage scaling here
 replicas:
   - name: demo-api
-    count: #{octopus.deployment.api.replicas}
+    count: 2
   - name: demo-frontend
     count: 1
 
