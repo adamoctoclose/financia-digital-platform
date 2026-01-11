@@ -17,6 +17,6 @@ replicas:
 # Manage versions here
 images:
   - name: ghcr.io/adamoctoclose/financiadigital.api
-    newTag: 1.0.0.4
+    newTag: "1.0.0.5"
   - name: ghcr.io/adamoctoclose/financiadigital.frontend
-    newTag: 1.0.0.4
+    newTag: "1.0.0.5"
