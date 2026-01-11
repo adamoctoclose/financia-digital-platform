@@ -3,5 +3,5 @@ variable "octopus.deployment.api.replicas" {
 }
 
 variable "octopus.deployment.frontend.replicas" {
-    value "1" {}
+    value "2" {}
 }
