@@ -72,7 +72,7 @@ step "argo-configuration-rollout" {
 
         container {
             feed = "github-container-registry"
-            image = "octopusdeploylabs/worker-tools:6.5.0-ubuntu.22.04"
+            image = "octopusdeploylabs/workertools:7.5.4"
         }
     }
 }
