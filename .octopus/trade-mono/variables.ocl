@@ -11,7 +11,7 @@ variable "Project.Channel.Name" {
         channel = ["configuration"]
     }
 
-    value "Release" {
+    value "" {
         channel = ["default"]
         description = ""
     }
