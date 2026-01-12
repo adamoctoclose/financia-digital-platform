@@ -14,10 +14,6 @@ variable "octopus.deployment.frontend.replicas" {
 }
 
 variable "octopus.deployment.api.replicas" {
-    value "1" {
-        environment = ["development"]
-    }
-
     value "2" {
         description = ""
         environment = ["production"]
@@ -26,5 +22,9 @@ variable "octopus.deployment.api.replicas" {
     value "1" {
         description = ""
         environment = ["test"]
+    }
+
+    value "2" {
+        environment = ["development"]
     }
 }
