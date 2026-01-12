@@ -17,7 +17,7 @@ commonLabels:
 # 4. SCALING: Controlled by Octopus Variables
 replicas:
   - name: demo-api
-    count: 2
+    count: 1
   - name: demo-frontend
     count: 1
 
