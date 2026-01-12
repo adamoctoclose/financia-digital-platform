@@ -55,3 +55,24 @@ step "update-argo-cd-application-manifests" {
         }
     }
 }
+
+step "argo-configuration-rollout" {
+    name = "Argo Configuration Rollout "
+
+    action {
+        action_type = "Octopus.Script"
+        channels = ["configuration"]
+        properties = {
+            Octopus.Action.Script.ScriptBody = "write-host \"argo rollout\""
+            Octopus.Action.Script.ScriptSource = "Inline"
+            Octopus.Action.Script.Syntax = "PowerShell"
+            OctopusUseBundledTooling = "False"
+        }
+        worker_pool = "hosted-ubuntu"
+
+        container {
+            feed = "github-container-registry"
+            image = "octopusdeploylabs/worker-tools:6.5.0-ubuntu.22.04"
+        }
+    }
+}
