@@ -24,6 +24,6 @@ replicas:
 # 5. IMAGES: Controlled by Octopus Packages
 images:
   - name: ghcr.io/adamoctoclose/financiadigital.api
-    newTag: 1.0.0.14
+    newTag: 1.0.0.15
   - name: ghcr.io/adamoctoclose/financiadigital.frontend
-    newTag: 1.0.0.14
+    newTag: 1.0.0.15
