@@ -2,10 +2,6 @@ variable "octopus.deployment.api.replicas" {
     value "2" {}
 }
 
-variable "octopus.deployment.frontend.replicas" {
-    value "3" {}
-}
-
 variable "Project.Channel.Name" {
     value "" {
         channel = ["default"]
@@ -15,4 +11,8 @@ variable "Project.Channel.Name" {
     value "-config" {
         channel = ["configuration"]
     }
+}
+
+variable "octopus.deployment.frontend.replicas" {
+    value "1" {}
 }
