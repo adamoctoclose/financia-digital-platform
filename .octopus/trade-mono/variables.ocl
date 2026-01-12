@@ -7,12 +7,12 @@ variable "octopus.deployment.frontend.replicas" {
 }
 
 variable "Project.Channel.Name" {
-    value "config" {
-        channel = ["configuration"]
-    }
-
     value "" {
         channel = ["default"]
         description = ""
+    }
+
+    value "-config" {
+        channel = ["configuration"]
     }
 }
